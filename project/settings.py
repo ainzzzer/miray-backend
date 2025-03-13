@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,12 +38,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'corsheaders',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -125,3 +133,89 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = BASE_DIR.parent / 'media'
 MEDIA_URL = '/media/'
+
+
+CORS_URLS_REGEX = r"^/api/.*$"
+CORS_ALLOW_METHODS = ("GET", "POST", "PUT", "PATCH", "DELETE")
+
+
+REST_FRAMEWORK = {
+    # 'EXCEPTION_HANDLER': 'project.utils.custom_exception_handler',
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+    'TEST_REQUEST_RENDERER_CLASSES': [
+        'rest_framework.renderers.MultiPartRenderer',
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DATETIME_FORMAT':  "%d.%m.%Y %H:%M",
+    'DATETIME_INPUT_FORMATS': ["%d.%m.%Y %H:%M"],
+    'DATE_FORMAT': "%d.%m.%Y",
+    'DATE_INPUT_FORMATS': ["%d.%m.%Y"],
+    'TIME_FORMAT': "%H:%M",
+    'TIME_INPUT_FORMATS': ["%H:%M"],
+}
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
+
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'UPDATE_LAST_LOGIN': True,
+}
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Miray API Документация',
+    'DESCRIPTION': r"""\
+        По возможности НЕ используем `PATCH`\
+        Загрузка постера будет реализована отдельно\
+        \
+        Дата вводится и выводится ТОЛЬКО в форматах `15.03.2025 18:00` и `01.10.2025`
+        """,
+    'SERVE_INCLUDE_SCHEMA': True,
+    "SWAGGER_UI_SETTINGS": {
+        "filter": True, # включить поиск по тегам
+    },
+    'COMPONENT_SPLIT_REQUEST': True,
+    "TAGS": [
+        {"name": "token", "description": "Авторизация - токены и действия с ними"},
+    ]
+}
+
+
+# Логирование SQL запросов для оптимизации
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '{message}\n',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+    },
+    # 'loggers': {
+    #     'django.db.backends': {
+    #         'handlers': ['console'],
+    #         'level': 'DEBUG'
+    #     },
+    # }
+}
+
