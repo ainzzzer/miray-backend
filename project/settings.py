@@ -198,6 +198,10 @@ SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
     "TAGS": [
         {"name": "token", "description": "Авторизация - токены и действия с ними"},
+        {"name": "Категории", "description": "Категории товаров"},
+        {"name": "Типы товаров", "description": "К какому типу относятся товары"},
+        {"name": "Характеристики", "description": "Общие виды характеристик для товаров"},
+        {"name": "Опции характеристик", "description": ""},
     ]
 }
 
@@ -225,4 +229,3 @@ LOGGING = {
     #     },
     # }
 }
-

@@ -27,6 +27,7 @@ from drf_spectacular.views import (
 
 urlpatterns = [
     path("api/", include("tokens.urls")),
+    path("api/", include("product.urls")),
 ]
 
 

@@ -7,7 +7,7 @@ class Category(models.Model):
 
 
 class ProductType(models.Model):
-    """Тип, к которому будут относиться продукты.
+    """Тип, к которому будут относиться товары.
 
     К примеру: золотые изделия, серебряные и т.д."""
 
@@ -41,7 +41,7 @@ class ProductImage(models.Model):
 
 
 class ProductFile(models.Model):
-    """Медиа файлы продукта."""
+    """Медиа файлы товара."""
 
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name="files")
@@ -49,14 +49,14 @@ class ProductFile(models.Model):
 
 
 class Option(models.Model):
-    """Характеристика для продуктов."""
+    """Характеристика для товаров."""
 
     name = models.CharField(max_length=50, unique=True)
     is_general = models.BooleanField(default=False)
 
 
 class OptionValue(models.Model):
-    """Значение характеристики для продуктов."""
+    """Значение характеристики для товаров."""
 
     option = models.ForeignKey(
         Option, on_delete=models.CASCADE, related_name="option_values")
@@ -67,7 +67,7 @@ class OptionValue(models.Model):
 
 
 class ProductOption(models.Model):
-    """Характеристика продукта.
+    """Характеристика товара.
 
     Связующая таблица."""
 
@@ -81,7 +81,7 @@ class ProductOption(models.Model):
 
 
 class ProductOptionValue(models.Model):
-    """Значение характеристики продукта.
+    """Значение характеристики товара.
 
     Связующая таблица."""
 
