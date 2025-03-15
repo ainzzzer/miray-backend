@@ -15,7 +15,7 @@ class ProductTypeSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class OptionSeriaizer(serializers.ModelSerializer):
+class OptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Option
         fields = "__all__"

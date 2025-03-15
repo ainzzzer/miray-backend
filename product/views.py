@@ -2,8 +2,10 @@ from rest_framework.viewsets import ModelViewSet
 
 from drf_spectacular.utils import extend_schema
 
+from project.permissions import IsStaffOrClientWithPermReadOnly
+
 from .serializers import (CategorySerializer, ProductTypeSerializer,
-                          OptionSeriaizer, OptionValueSerializer)
+                          OptionSerializer, OptionValueSerializer)
 from .models import Category, ProductType, Option, OptionValue
 
 
@@ -13,7 +15,7 @@ from .models import Category, ProductType, Option, OptionValue
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    # permission_classes = None
+    permission_classes = [IsStaffOrClientWithPermReadOnly]
 
 
 @extend_schema(
@@ -22,7 +24,7 @@ class CategoryViewSet(ModelViewSet):
 class ProductTypeViewSet(ModelViewSet):
     queryset = ProductType.objects.all()
     serializer_class = ProductTypeSerializer
-    # permission_classes = None
+    permission_classes = [IsStaffOrClientWithPermReadOnly]
 
 
 @extend_schema(
@@ -30,8 +32,8 @@ class ProductTypeViewSet(ModelViewSet):
 )
 class OptionViewSet(ModelViewSet):
     queryset = Option.objects.all()
-    serializer_class = OptionSeriaizer
-    # permission_classes = None
+    serializer_class = OptionSerializer
+    permission_classes = [IsStaffOrClientWithPermReadOnly]
 
 
 @extend_schema(
@@ -40,4 +42,4 @@ class OptionViewSet(ModelViewSet):
 class OptionValueViewSet(ModelViewSet):
     queryset = OptionValue.objects.all()
     serializer_class = OptionValueSerializer
-    # permission_classes = None
+    permission_classes = [IsStaffOrClientWithPermReadOnly]
